@@ -7,7 +7,7 @@ import json
 class Command(BaseCommand):
     help = 'Loading data from csv to database.'
 
-    def handle(self,*args, **kwargs):
+    def handle(self, *args, **kwargs):
         with open(
                 'recipes/data/ingredients.json', 'r',
                 encoding='UTF-8'
