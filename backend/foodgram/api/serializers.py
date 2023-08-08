@@ -1,46 +1,15 @@
-import djoser.serializers
+from django.db import transaction
 from django.shortcuts import get_object_or_404
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers, status
 from rest_framework.exceptions import ValidationError
 from rest_framework.fields import SerializerMethodField
-from rest_framework.validators import UniqueTogetherValidator
-
 from recipes.models import (Favorite, Ingredient, IngredientToRecipe, Recipe,
                             ShopList, Tag)
 from users.models import User
+from users.serializers import UserSerializer
 
-
-class UserSerializer(djoser.serializers.UserSerializer):
-    """ Сериализатор пользователя """
-    is_subscribed = SerializerMethodField(read_only=True)
-
-    class Meta:
-        model = User
-        fields = ('username', 'email', 'id', 'first_name',
-                  'last_name', 'is_subscribed')
-        validators = [
-            UniqueTogetherValidator(
-                queryset=User.objects.all(),
-                fields=('username', 'email')
-            )
-        ]
-
-    def get_is_subscribed(self, obj):
-        request = self.context.get('request')
-        if self.context.get('request').user.is_anonymous:
-            return False
-        return obj.following.filter(username=request.user).exists()
-
-
-class UserCreateSerializer(djoser.serializers.UserCreateSerializer):
-    """ Сериализатор создания пользователя """
-
-    class Meta:
-        model = User
-        fields = (
-            'email', 'username', 'first_name',
-            'last_name', 'password')
+import djoser.serializers
 
 
 class SubscribeListSerializer(djoser.serializers.UserSerializer):
@@ -257,13 +226,14 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
         IngredientToRecipe.objects.bulk_create(ingredient_liist)
 
     def create(self, validated_data):
-        request = self.context.get('request', None)
-        tags = validated_data.pop('tags')
-        ingredients = validated_data.pop('ingredients')
-        recipe = Recipe.objects.create(author=request.user, **validated_data)
-        recipe.tags.set(tags)
-        self.create_ingredients(recipe, ingredients)
-        return recipe
+        with transaction.atomic():
+            request = self.context.get('request', None)
+            tags = validated_data.pop('tags')
+            ingredients = validated_data.pop('ingredients')
+            recipe = Recipe.objects.create(author=request.user, **validated_data)
+            recipe.tags.set(tags)
+            self.create_ingredients(recipe, ingredients)
+            return recipe
 
     def update(self, recipe, validated_data):
         ingredients = validated_data.pop('ingredients')
