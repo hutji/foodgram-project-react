@@ -74,18 +74,103 @@ docker-compose down
 
 ## Примеры API эндпоинтов:
 * ```/api/users/```  Get-запрос – получение списка пользователей. POST-запрос – регистрация нового пользователя. Доступно без токена.
+ ``` json
+{
+            "username": "hutji",
+            "email": "hutjicsgo@gmail.com",
+            "id": 1,
+            "first_name": "",
+            "last_name": "",
+            "is_subscribed": false
+        }
+    ]
+}
+```
 
 * ```/api/users/set_password``` POST-запрос – изменение собственного пароля. Доступно авторизированным пользователям. 
 
-* ```/api/auth/token/login/``` POST-запрос – получение токена. Используется для авторизации по емейлу и паролю, чтобы далее использовать токен при запросах.
-
-* ```/api/auth/token/logout/``` POST-запрос – удаление токена. 
-
 * ```/api/tags/``` GET-запрос — получение списка всех тегов. Доступно без токена.
+```json
+[
+    {
+        "id": 3,
+        "name": "Завтрак",
+        "color": "green",
+        "slug": "breakfast"
+    },
+```
 
 * ```/api/ingredients/``` GET-запрос – получение списка всех ингредиентов. Подключён поиск по частичному вхождению в начале названия ингредиента. Доступно без токена.
-
+```json
+[
+    {
+        "id": 2188,
+        "name": "ячневая крупа",
+        "measurement_unit": "г"
+    },
+```
 * ```/api/recipes/``` GET-запрос – получение списка всех рецептов. Возможен поиск рецептов по тегам и по id автора (доступно без токена). POST-запрос – добавление нового рецепта (доступно для авторизированных пользователей).
+``` json
+{
+    "count": 1,
+    "next": null,
+    "previous": null,
+    "results": [
+        {
+            "id": 1,
+            "tags": [],
+            "author": {
+                "username": "hutji",
+                "email": "hutjicsgo@gmail.com",
+                "id": 1,
+                "first_name": "",
+                "last_name": "",
+                "is_subscribed": false
+            },
+            "ingredients": [
+                {
+                    "id": 2189,
+                    "name": "сиртаки",
+                    "measurement_unit": "уп",
+                    "amount": 2
+                },
+                {
+                    "id": 1278,
+                    "name": "перец сладкий оранжевый",
+                    "measurement_unit": "г",
+                    "amount": 200
+                },
+                {
+                    "id": 1342,
+                    "name": "помидоры",
+                    "measurement_unit": "г",
+                    "amount": 300
+                },
+                {
+                    "id": 1529,
+                    "name": "салат листовой",
+                    "measurement_unit": "г",
+                    "amount": 300
+                },
+                {
+                    "id": 975,
+                    "name": "маслины",
+                    "measurement_unit": "г",
+                    "amount": 150
+                }
+            ],
+            "is_favorited": false,
+            "is_in_shopping_cart": false,
+            "name": "Греческий салат",
+            "image": "http://127.0.0.1:8000/media/recipes/image/recept_11881_7v20_HJQLPIy.jpg",
+            "text": "Вкусный и простой салат",
+            "cooking_time": 5
+        }
+    ]
+}
+```
+
+
 
 ## Технологии:
 Python 3.9, 
