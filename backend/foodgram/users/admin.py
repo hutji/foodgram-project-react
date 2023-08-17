@@ -1,9 +1,20 @@
 from django.contrib import admin
 
 from .models import Follow, User
+from recipes.models import ShopList
+
+class FollowInline(admin.TabularInline):
+    model = Follow
+    extra = 0
+
+
+class ShopListInline(admin.TabularInline):
+    model = ShopList
+    extra = 1
 
 
 class UserAdmin(admin.ModelAdmin):
+    inlines = (FollowInline, ShopListInline)
     list_display = (
         'username', 'first_name', 'last_name', 'email',
     )
@@ -11,6 +22,8 @@ class UserAdmin(admin.ModelAdmin):
     list_filter = ('username', 'email')
     ordering = ('username',)
     empty_value_display = '-пусто-'
+    verbose_name = 'Пользователь'
+    verbose_name_plural = 'Пользователи'
 
 
 class FollowAdmin(admin.ModelAdmin):
