@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.contrib.auth.models import Group
+from rest_framework.authtoken.models import TokenProxy
 
 from .models import (Favorite, Ingredient, IngredientToRecipe, Recipe,
                      ShopList, Tag)
@@ -17,9 +19,13 @@ class RecipeAdmin(admin.ModelAdmin):
     search_fields = ('name', 'author', 'tags')
     inlines = (IngredientInline,)
     empty_value_display = '-пусто-'
+    verbose_name = 'Рецепт'
+    verbose_name_plural = 'Рецепты'
 
     def in_favorite(self, obj: Recipe):
         return obj.favorites.count()
+
+    in_favorite.short_description = 'В избранном'
 
 
 class IngredientAdmin(admin.ModelAdmin):
@@ -54,5 +60,7 @@ class ShoplistAdmin(admin.ModelAdmin):
 
 admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Tag, TagAdmin)
-admin.site.register(Favorite, FavoriteAdmin)
 admin.site.register(ShopList, ShoplistAdmin)
+admin.site.register(Favorite, FavoriteAdmin)
+admin.site.unregister(Group)
+admin.site.unregister(TokenProxy)

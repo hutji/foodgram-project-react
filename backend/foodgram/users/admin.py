@@ -6,6 +6,7 @@ from recipes.models import ShopList
 class FollowInline(admin.TabularInline):
     model = Follow
     extra = 0
+    fk_name = 'username'
 
 
 class ShopListInline(admin.TabularInline):
