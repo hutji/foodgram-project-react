@@ -170,7 +170,18 @@ docker-compose down
 }
 ```
 
-
+# Проект доступен по адресу:    
+```    
+- http://hutjifoodgram.zapto.org    
+- http://hutjifoodgram.zapto.org/admin/    
+```    
+   
+## Права администратора:    
+```    
+- логин: hutji    
+- почта: hutjicsgo@gmail.com    
+- пароль: hutji98901496
+```
 
 ## Технологии:
 Python 3.9, 
