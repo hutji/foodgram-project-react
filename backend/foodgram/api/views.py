@@ -1,7 +1,4 @@
-import io
-
 from django.db.models import Sum
-from django.http import FileResponse
 from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
@@ -85,17 +82,17 @@ class RecipeViewSet(viewsets.ModelViewSet):
     @staticmethod
     def creating_pdf(dictionary, pdf_file):
         begin_position_x, begin_position_y = 30, 730
-        pdfmetrics.registerFont(TTFont('VeraBd', 'VeraBd.ttf'))
-        pdf_file.setFont('VeraBd', 25)
+        pdfmetrics.registerFont(TTFont('DejaVuSerif', 'DejaVuSerif.ttf'))
+        pdf_file.setFont('DejaVuSerif', 25)
         pdf_file.setTitle('Список покупок')
         pdf_file.drawString(
             begin_position_x, begin_position_y + 40, 'Список покупок: ')
-        pdf_file.setFont('VeraBd', 18)
+        pdf_file.setFont('DejaVuSerif', 18)
         for number, item in enumerate(dictionary, start=1):
             if begin_position_y < 100:
                 begin_position_y = 730
                 pdf_file.showPage()
-                pdf_file.setFont('VeraBd', 18)
+                pdf_file.setFont('DejaVuSerif', 18)
             pdf_file.drawString(
                 begin_position_x,
                 begin_position_y,
