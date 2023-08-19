@@ -5,7 +5,7 @@ services:
     image: postgres:13.0-alpine
     restart: always
     volumes:
-      - db_data:/var/lib/postgresql/data/
+      - infra_db_data:/var/lib/postgresql/data/
     env_file:
       - ./.env
     container_name: foodgram_db
@@ -47,5 +47,5 @@ services:
 volumes:
   static_value:
   media_value:
-  db_data:
+  infra_db_data:
   result_build:
