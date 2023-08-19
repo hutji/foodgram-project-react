@@ -1,6 +1,7 @@
 from django.db import transaction
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
+from django.shortcuts import get_object_or_404
 
 from recipes.models import (Favorite, Ingredient, IngredientToRecipe, Recipe,
                              ShopList, Tag)
@@ -106,7 +107,7 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
             'name', 'image', 'text', 'cooking_time')
 
     def validate(self, data):
-        if Recipe.objects.filter(text=data['text']).exists():
+        if Recipe.objects.filter(name=data['name']).exclude(id=self.instance.id).exists():
             raise serializers.ValidationError(
                 'Такой рецепт уже есть!')
         return data
