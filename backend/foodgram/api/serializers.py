@@ -105,17 +105,11 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
             'id', 'tags', 'author', 'ingredients',
             'name', 'image', 'text', 'cooking_time')
 
-   def validate(self, data):
-       if self.instance:
-           for field in data:
-               if getattr(self.instance, field) != data[field]:
-                   break
-           else:
-               raise serializers.ValidationError('Нет изменений для сохранения!')
-       if Recipe.objects.filter(name=data['name']).exclude(id=self.instance.id).exists():
+    def validate(self, data):
+        if Recipe.objects.filter(
+                name=data['name']).exclude(id=self.instance.id).exists():
            raise serializers.ValidationError('Такой рецепт уже есть!')
-       return data
-
+        return data
 
     def validate_tags(self, tags):
         tags_list = []
