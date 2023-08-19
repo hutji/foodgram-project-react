@@ -118,6 +118,7 @@ REST_FRAMEWORK = {
     ],
 }
 
+NAME_SHOPPING_CART_PDF = 'shopping_cart.pdf'
 
 DJOSER = {
     'HIDE_USERS': False,
