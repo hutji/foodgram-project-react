@@ -14,15 +14,15 @@ from rest_framework.response import Response
 from foodgram.settings import NAME_SHOPPING_CART_PDF
 
 from recipes.models import (Favorite, Ingredient, IngredientToRecipe, Recipe,
-                           ShopList, Tag)
+                            ShopList, Tag)
 
 from .filters import IngredientFilter, RecipeFilter
 from .pagination import CustomPagination
 from .permissions import AuthorPermission
 from .serializers import (CreateRecipeSerializer, FavoriteSerializer,
                           IngredientSerializer, RecipeReadSerializer,
-                          ShopListSerializer, TagSerializer)
-from users.serializers import UserSerializer
+                          ShopListSerializer, TagSerializer,
+                          RecipeBriefSerializer)
 
 
 CONTENT_TYPE = 'application/pdf'
@@ -51,7 +51,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = CreateRecipeSerializer
     permission_classes = (AuthorPermission,)
-    pagination_class = CustomPagination 
+    pagination_class = CustomPagination
     filter_backends = (DjangoFilterBackend, )
     filterset_class = RecipeFilter
 
