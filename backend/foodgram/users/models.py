@@ -53,4 +53,3 @@ class Follow(models.Model):
     def clean(self):
         if self.username == self.author:
             raise ValidationError('На себя подписываться нельзя!')
-
