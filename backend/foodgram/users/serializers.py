@@ -1,15 +1,17 @@
+import djoser.serializers
+
 from django.shortcuts import get_object_or_404
-from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import status
+from rest_framework.serializers import ModelSerializer
 from rest_framework.exceptions import ValidationError
 from rest_framework.fields import SerializerMethodField
 from rest_framework.validators import UniqueTogetherValidator
 
-import api.serializers
+from recipes.models import Recipe
 from users.models import User
 
 
-class UserSerializer(UserSerializer):
+class UserSerializer(djoser.serializers.UserSerializer):
     """ Сериализатор пользователя """
     is_subscribed = SerializerMethodField(read_only=True)
 
@@ -31,7 +33,7 @@ class UserSerializer(UserSerializer):
         return obj.following.filter(username=request.user).exists()
 
 
-class UserCreateSerializer(UserCreateSerializer):
+class UserCreateSerializer(djoser.serializers.UserCreateSerializer):
     """ Сериализатор создания пользователя """
 
     class Meta:
@@ -41,7 +43,13 @@ class UserCreateSerializer(UserCreateSerializer):
             'last_name', 'password')
 
 
-class SubscribeListSerializer(UserSerializer):
+class RecipeBriefSerializer(ModelSerializer):
+    class Meta:
+        model = Recipe
+        fields = ('id', 'name', 'image', 'cooking_time')
+
+
+class SubscribeListSerializer(djoser.serializers.UserSerializer):
     """ Сериализатор для получения подписок """
     recipes_count = SerializerMethodField()
     recipes = SerializerMethodField()
@@ -86,7 +94,7 @@ class SubscribeListSerializer(UserSerializer):
         recipes = obj.recipes.all()
         if limit:
             recipes = recipes[: int(limit)]
-        serializer = api.serializers.RecipeShortSerializer(
+        serializer = RecipeBriefSerializer(
             recipes, many=True, read_only=True
         )
         return serializer.data

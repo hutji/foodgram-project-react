@@ -9,7 +9,7 @@ from rest_framework.permissions import (IsAuthenticated,
 from rest_framework.response import Response
 
 from recipes.models import (Favorite, Ingredient, IngredientToRecipe, Recipe,
-                            ShopList, Tag)
+                           ShopList, Tag)
 
 from .filters import IngredientFilter, RecipeFilter
 from .pagination import CustomPagination
@@ -17,7 +17,7 @@ from .permissions import AuthorPermission
 from .serializers import (CreateRecipeSerializer, FavoriteSerializer,
                           IngredientSerializer, RecipeReadSerializer,
                           ShopListSerializer, TagSerializer)
-
+from users.serializers import UserSerializer
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     """Вьюсет для IngredientSerializer."""
@@ -59,7 +59,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 f"\n{ingredient['ingredient__name']} "
                 f"({ingredient['ingredient__measurement_unit']}) - "
                 f"{ingredient['amount']}")
-        file = 'shopping_list.txt'
+        file = 'shopping_list.pdf'
         response = HttpResponse(shopping_list, content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename="{file}.pdf"'
         return response

@@ -1,7 +1,8 @@
 from django.contrib import admin
 
 from .models import Follow, User
-from recipes.models import ShopList
+from recipes.models import ShopList, Favorite
+
 
 class FollowInline(admin.TabularInline):
     model = Follow
@@ -14,8 +15,13 @@ class ShopListInline(admin.TabularInline):
     extra = 1
 
 
+class FavoriteInline(admin.TabularInline):
+    model = Favorite
+    extra = 0
+
+
 class UserAdmin(admin.ModelAdmin):
-    inlines = (FollowInline, ShopListInline)
+    inlines = (FollowInline, ShopListInline, FavoriteInline)
     list_display = (
         'username', 'first_name', 'last_name', 'email',
     )
