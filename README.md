@@ -180,7 +180,7 @@ docker-compose down
 ```    
 - логин: hutji    
 - почта: hutjicsgo@gmail.com    
-- пароль: hutji98901496
+- пароль: секрет
 ```
 
 ## Технологии:
